@@ -1,4 +1,4 @@
-Here is the complete, single-block `README.md`. Copy the entire code block below and paste it into your `README.md` file.
+
 
 ````markdown
 # HNG Stage 7: Google Auth & Paystack Integration Service
@@ -126,21 +126,4 @@ To fully test the application flow, follow these steps:
       * Send a GET request to `/payments/YOUR_REFERENCE/status`.
       * Confirm the status is `"success"`.
 
------
-
-## 👤 Author
-
-**Emmanuel Eguavoen** - HNG Internship Stage 7
-
-````
-
-### How to push this update:
-
-1.  Save the file.
-2.  Run these commands:
-    ```bash
-    git add README.md
-    git commit -m "Update README with project documentation"
-    git push
-    ```
 ````
