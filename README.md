@@ -1,98 +1,146 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+Here is the complete, single-block `README.md`. Copy the entire code block below and paste it into your `README.md` file.
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+````markdown
+# HNG Stage 7: Google Auth & Paystack Integration Service
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+This backend service is a robust implementation of **Task 1** for the HNG Stage 7 Backend track. It demonstrates secure **Google OAuth 2.0 authentication** and **Paystack payment processing** using **NestJS**.
 
-## Description
+The service allows users to authenticate via Google, creating a user profile in the database, and subsequently enables them to initiate and verify payments securely.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🚀 Features
 
-## Project setup
+* **Google Authentication:** Secure server-side OAuth flow (Login, Callback, User Creation).
+* **Payment Processing:** Integration with Paystack to initialize transactions.
+* **Transaction Verification:** On-demand status checks for payments.
+* **Webhooks:** Handling real-time payment updates from Paystack.
+* **Data Persistence:** PostgreSQL database using TypeORM for Users and Transactions.
+
+## 🛠️ Tech Stack
+
+* **Framework:** NestJS (Node.js)
+* **Language:** TypeScript
+* **Database:** PostgreSQL
+* **ORM:** TypeORM
+* **Authentication:** Passport.js (Google Strategy)
+* **HTTP Client:** Axios
+
+---
+
+## ⚙️ Setup & Installation
+
+### 1. Clone the Repository
+```bash
+git clone [https://github.com/Emmavoen/hng-stage7-backend.git](https://github.com/Emmavoen/hng-stage7-backend.git)
+cd hng-stage7-backend
+````
+
+### 2\. Install Dependencies
 
 ```bash
-$ npm install
+npm install
 ```
 
-## Compile and run the project
+### 3\. Configure Environment Variables
+
+Create a `.env` file in the root directory and populate it with your credentials:
+
+```env
+# Database Configuration
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=your_db_password
+DB_NAME=hng_stage7
+
+# Google OAuth Credentials (console.cloud.google.com)
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_CALLBACK_URL=http://localhost:3000/auth/google/callback
+
+# Paystack Credentials (dashboard.paystack.com)
+PAYSTACK_SECRET_KEY=sk_test_xxxxxxxxxxxxxxxxxxxx
+```
+
+### 4\. Run the Application
+
+Ensure your PostgreSQL database is running.
 
 ```bash
-# development
-$ npm run start
+# Development Mode
+npm run start:dev
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+# Production Build
+npm run build
+npm run start:prod
 ```
 
-## Run tests
+-----
 
-```bash
-# unit tests
-$ npm run test
+## 📡 API Endpoints
 
-# e2e tests
-$ npm run test:e2e
+### 🔐 Authentication
 
-# test coverage
-$ npm run test:cov
-```
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/auth/google` | Initiates the Google OAuth login flow. Redirects user to Google. |
+| `GET` | `/auth/google/callback` | Handles the return from Google, creates/updates the user, and returns user info. |
 
-## Deployment
+### 💳 Payments
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/payments/paystack/initiate` | Starts a new payment. Requires `{ "email": "...", "amount": 5000 }` in body. |
+| `GET` | `/payments/:reference/status` | Checks the status of a specific transaction reference. |
+| `POST` | `/payments/paystack/webhook` | Receives event updates from Paystack (e.g., `charge.success`). |
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+-----
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+## 🧪 Testing Workflow
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+To fully test the application flow, follow these steps:
 
-## Resources
+1.  **Authenticate:**
 
-Check out a few resources that may come in handy when working with NestJS:
+      * Navigate to `http://localhost:3000/auth/google` in your browser.
+      * Login with your Google account.
+      * Copy the **email** from the JSON response.
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+2.  **Initiate Payment:**
 
-## Support
+      * Send a POST request to `/payments/paystack/initiate` using Postman/cURL.
+      * Body:
+        ```json
+        {
+          "email": "email_from_step_1@gmail.com",
+          "amount": 5000
+        }
+        ```
+      * Copy the **authorization\_url** and **reference** from the response.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+3.  **Complete Payment:**
 
-## Stay in touch
+      * Open the `authorization_url` in your browser and complete the mock payment.
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+4.  **Verify Status:**
 
-## License
+      * Send a GET request to `/payments/YOUR_REFERENCE/status`.
+      * Confirm the status is `"success"`.
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+-----
+
+## 👤 Author
+
+**Emmanuel Eguavoen** - HNG Internship Stage 7
+
+````
+
+### How to push this update:
+
+1.  Save the file.
+2.  Run these commands:
+    ```bash
+    git add README.md
+    git commit -m "Update README with project documentation"
+    git push
+    ```
+````
