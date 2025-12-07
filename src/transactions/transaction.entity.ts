@@ -24,7 +24,6 @@ export class Transaction {
   @CreateDateColumn()
   createdAt: Date;
 
-  // FIX: Add '| null' here so TypeScript knows it can be empty
   @Column({ type: 'timestamp', nullable: true })
   paidAt: Date | null;
 

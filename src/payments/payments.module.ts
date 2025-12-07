@@ -6,7 +6,7 @@ import { TransactionsModule } from '../transactions/transactions.module';
 import { UsersModule } from '../users/users.module';
 
 @Module({
-  imports: [HttpModule, TransactionsModule, UsersModule], // Access to Axios + Transaction Repo + User Repo
+  imports: [HttpModule, TransactionsModule, UsersModule],
   controllers: [PaymentsController],
   providers: [PaymentsService],
 })

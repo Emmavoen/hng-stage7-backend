@@ -11,7 +11,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {
     super({
-      // We use '!' to tell TypeScript these variables will certainly exist
       clientID: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       callbackURL: process.env.GOOGLE_CALLBACK_URL!,

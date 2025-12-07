@@ -7,7 +7,9 @@ import {
   Req,
   Res,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { PaymentsService } from './payments.service';
 import type { Response } from 'express';
 
@@ -16,8 +18,11 @@ export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
   @Post('paystack/initiate')
-  async initiate(@Body() body: { email: string; amount: number }) {
-    return await this.paymentsService.initiatePayment(body.email, body.amount);
+  @UseGuards(AuthGuard('jwt'))
+  async initiate(@Req() req, @Body() body: { amount: number }) {
+    const email = req.user.email;
+
+    return await this.paymentsService.initiatePayment(email, body.amount);
   }
 
   @Post('paystack/webhook')
@@ -30,6 +35,7 @@ export class PaymentsController {
   }
 
   @Get(':reference/status')
+  @UseGuards(AuthGuard('jwt'))
   async getStatus(@Param('reference') reference: string) {
     return await this.paymentsService.verifyTransaction(reference);
   }

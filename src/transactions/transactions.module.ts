@@ -4,6 +4,6 @@ import { Transaction } from './transaction.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Transaction])],
-  exports: [TypeOrmModule], // Export so Payments module can save transactions
+  exports: [TypeOrmModule],
 })
 export class TransactionsModule {}
